@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="many.to.many.mapper.UserMapper">
+	
+	<select id="getUserByRoleId" resultMap="getUserMap">
+		select * from user_role ur,user u where ur.user_id=u.id and ur.role_id=#{id} 
+	</select>
+	
+	<resultMap type="com.ys.po.User" id="getUserMap">
+		<id column="id" property="id"/>
+		<result column="username" property="username"/>
+		<result column="sex" property="sex"/>
+	</resultMap>
+</mapper>

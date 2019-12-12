@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="one.to.many.mapper.UserMapper">
+	<!-- 
+	方式一：嵌套结果：使用嵌套结果映射来处理重复的联合结果的子集
+                               封装联表查询的数据(去除重复的数据)
+     select * from user u,orders o where u.id=o.user_id and u.id=#{id}
+	 -->
+	<select id="selectUserAndOrdersByUserId" resultMap="getUserAndOrders">
+		select u.*,o.id oid,o.number number from user u,orders o where u.id=o.user_id and u.id=#{id}
+	</select>
+	<resultMap type="com.ys.po.User" id="getUserAndOrders">
+		<!--id:指定查询列表唯一标识，如果有多个唯一标识，则配置多个id
+			column:数据库对应的列
+			property:实体类对应的属性名 -->
+		<id column="id" property="id"/>
+		<result column="username" property="username"/>
+		<result column="sex" property="sex"/>
+		<!--
+			property:实体类中定义的属性名
+			ofType：指定映射到list集合中的全类名
+		  -->
+		<collection property="orders" ofType="com.ys.po.Orders">
+			<id column="oid" property="id"/>
+			<result column="number" property="number"/>
+		</collection>
+	</resultMap>
+</mapper>
